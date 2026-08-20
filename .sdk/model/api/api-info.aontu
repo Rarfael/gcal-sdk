@@ -1,0 +1,27 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      description: "Create, read, update, and delete events on the primary Google Calendar."
+      security: {
+        in: "header"
+        name: "Authorization"
+        prefix: "Bearer"
+        scheme: "bearerAuth"
+        type: "http"
+      }
+      servers: [
+        {
+          url: "https://www.googleapis.com/calendar/v3"
+        }
+      ]
+      summary: "Create, read, update, and delete events on the primary Google Calendar."
+      title: "Google Calendar Events API"
+      version: "3.0.0"
+      website: "https://googleapis.com"
+    }
+  }
+}
+

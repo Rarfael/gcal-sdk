@@ -1,0 +1,57 @@
+{
+  "existing": {
+    "event": {
+      "EVENT00": {
+        "created": "s64",
+        "description": "s65",
+        "end": {},
+        "htmlLink": "s67",
+        "id": "EVENT00",
+        "location": "s69",
+        "start": {},
+        "status": "s6b",
+        "summary": "s6c",
+        "updated": "s6d"
+      },
+      "EVENT01": {
+        "created": "sc8",
+        "description": "sc9",
+        "end": {},
+        "htmlLink": "scb",
+        "id": "EVENT01",
+        "location": "scd",
+        "start": {},
+        "status": "scf",
+        "summary": "sd0",
+        "updated": "sd1"
+      },
+      "EVENT02": {
+        "created": "s12c",
+        "description": "s12d",
+        "end": {},
+        "htmlLink": "s12f",
+        "id": "EVENT02",
+        "location": "s131",
+        "start": {},
+        "status": "s133",
+        "summary": "s134",
+        "updated": "s135"
+      }
+    }
+  },
+  "new": {
+    "event": {
+      "event_ref01": {
+        "created": "s190",
+        "description": "s191",
+        "end": {},
+        "htmlLink": "s193",
+        "location": "s195",
+        "start": {},
+        "status": "s197",
+        "summary": "s198",
+        "updated": "s199"
+      }
+    }
+  }
+}
