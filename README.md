@@ -10,6 +10,8 @@ This is an unofficial SDK for the Google Calendar Events public API, generated b
 
 Learn more about Voxgig SDKs at [voxgig.com/sdk](https://voxgig.com/sdk/).
 
+> TypeScript, Python, PHP, Golang, Lua, JavaScript SDKs, a CLI with an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
+
 ## Entities, not endpoints
 
 This SDK exposes the API as a small set of **semantic entities** — Event — that you
@@ -49,11 +51,62 @@ const events = await client.Event().list()
 console.log(events)
 ```
 
+### Python
+
+```python
+client = GcalSDK.test()
+events = client.Event().list()
+print(events)
+```
+
+### PHP
+
+```php
+// Seed fixture data so offline calls resolve without a live server.
+$client = GcalSDK::test([
+    "entity" => ["event" => ["test01" => ["id" => "test01"]]],
+]);
+$events = $client->Event()->list();
+```
+
+### Golang
+
+```go
+client := sdk.Test()
+result, err := client.Event(nil).List(
+    nil, nil,
+)
+```
+
+### Lua
+
+```lua
+local client = sdk.test()
+local results, err = client:Event():list()
+```
+
+### JavaScript
+
+```js
+const client = GcalSDK.test()
+const events = await client.Event().list()
+// events is an array of entities, populated with mock data
+// — call events[0].data() for the record itself
+console.log(events)
+```
+
 ## Packages
 
 | Language | Package | Install |
 | --- | --- | --- |
 | TypeScript | `@voxgig-sdk/gcal` | publish pending — [install from git tag](https://github.com/voxgig-sdk/gcal-sdk/releases) |
+| Python | `voxgig-sdk-gcal` | publish pending — [install from git tag](https://github.com/voxgig-sdk/gcal-sdk/releases) |
+| PHP | `voxgig-sdk/gcal` | publish pending — [install from git tag](https://github.com/voxgig-sdk/gcal-sdk/releases) |
+| Golang | `github.com/voxgig-sdk/gcal-sdk/go` | `go get github.com/voxgig-sdk/gcal-sdk/go@latest` |
+| Lua | `voxgig-sdk-gcal` | publish pending — [install from git tag](https://github.com/voxgig-sdk/gcal-sdk/releases) |
+| JavaScript | `@voxgig-sdk/gcal-js` | publish pending — [install from git tag](https://github.com/voxgig-sdk/gcal-sdk/releases) |
+| Go CLI | `github.com/voxgig-sdk/gcal-sdk/go-cli` | `go install github.com/voxgig-sdk/gcal-sdk/go-cli/cmd/gcal@latest` |
+| Go MCP server | `github.com/voxgig-sdk/gcal-sdk/go-mcp` | `go get github.com/voxgig-sdk/gcal-sdk/go-mcp@latest` |
 
 ## Quickstart
 
@@ -79,7 +132,31 @@ See the [TypeScript README](ts/README.md) for the full guide.
 
 | Surface | Path |
 | --- | --- |
-| **SDK** (TypeScript) | `ts/` |
+| **SDK** (TypeScript, Python, PHP, Golang, Lua, JavaScript) | `ts/` `py/` `php/` `go/` `lua/` `js/` |
+| **CLI** | `go-cli/` |
+| **MCP server** | `go-mcp/` |
+
+## Use it from an AI agent (MCP)
+
+The generated MCP server exposes every operation in this SDK as an
+[MCP](https://modelcontextprotocol.io) tool that Claude, Cursor or Cline
+can call directly. Build and register it:
+
+```bash
+cd go-mcp && go build -o gcal-mcp .
+```
+
+Then add it to your agent's MCP config (Claude Desktop, Cursor, etc.):
+
+```json
+{
+  "mcpServers": {
+    "gcal": {
+      "command": "/abs/path/to/gcal-mcp"
+    }
+  }
+}
+```
 
 ## Entities
 
@@ -91,6 +168,98 @@ The API exposes one entity:
 
 The operations available across these entities are **load**, **list**, **create**, **update**, **remove** — see each entity's
 own list above for exactly which it supports.
+
+## Quickstart in other languages
+
+### Python
+
+```python
+import os
+from gcal_sdk import GcalSDK
+
+client = GcalSDK({
+    "apikey": os.environ.get("GCAL_APIKEY"),
+})
+
+# List all events (returns a list, raises on error)
+events = client.Event().list()
+for event in events:
+    print(event)
+
+# Load a specific event (returns the record, raises on error)
+event = client.Event().load({"id": "example_id"})
+print(event)
+```
+
+### PHP
+
+```php
+<?php
+require_once 'gcal_sdk.php';
+
+$client = new GcalSDK([
+    "apikey" => getenv("GCAL_APIKEY"),
+]);
+
+// List all events (returns an array; throws on error)
+$events = $client->Event()->list();
+print_r($events);
+
+// Load a specific event (returns the ENTITY; call data_get() for the record; throws on error)
+$event = $client->Event()->load(["id" => "example_id"]);
+print_r($event);
+```
+
+### Golang
+
+```go
+import sdk "github.com/voxgig-sdk/gcal-sdk/go"
+
+client := sdk.NewGcalSDK(map[string]any{
+    "apikey": os.Getenv("GCAL_APIKEY"),
+})
+
+// List all events
+events, err := client.Event(nil).List(nil, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(events)
+```
+
+### Lua
+
+```lua
+local sdk = require("gcal_sdk")
+
+local client = sdk.new({
+  apikey = os.getenv("GCAL_APIKEY"),
+})
+
+-- List all events
+local events, err = client:Event():list()
+print(events)
+
+-- Load a specific event
+local event, err = client:Event():load({ id = "example_id" })
+print(event)
+```
+
+### JavaScript
+
+```js
+const { GcalSDK } = require('@voxgig-sdk/gcal-js')
+
+const client = new GcalSDK({
+  apikey: process.env.GCAL_APIKEY,
+})
+
+// List all events (returns an array)
+const events = await client.Event().list()
+for (const event of events) {
+  console.log(event)
+}
+```
 
 ## Direct and prepare
 
@@ -110,6 +279,59 @@ When the entity interface does not cover an endpoint, use `direct`:
 
 **TypeScript:**
 ```ts
+const result = await client.direct({
+  path: '/api/resource/{id}',
+  method: 'GET',
+  params: { id: 'example' },
+})
+if (result instanceof Error) {
+  throw result
+}
+console.log(result.data)
+```
+
+**Python:**
+```python
+result = client.direct({
+    "path": "/api/resource/{id}",
+    "method": "GET",
+    "params": {"id": "example"},
+})
+```
+
+**PHP:**
+```php
+$result = $client->direct([
+    "path" => "/api/resource/{id}",
+    "method" => "GET",
+    "params" => ["id" => "example"],
+]);
+```
+
+**Go:**
+```go
+result, err := client.Direct(map[string]any{
+    "path":   "/api/resource/{id}",
+    "method": "GET",
+    "params": map[string]any{"id": "example"},
+})
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
+```
+
+**Lua:**
+```lua
+local result, err = client:direct({
+  path = "/api/resource/{id}",
+  method = "GET",
+  params = { id = "example" },
+})
+```
+
+**JavaScript:**
+```js
 const result = await client.direct({
   path: '/api/resource/{id}',
   method: 'GET',
@@ -149,6 +371,11 @@ Pass custom features via the `extend` option at construction time.
 ## Per-language documentation
 
 - [TypeScript](ts/README.md)
+- [Python](py/README.md)
+- [PHP](php/README.md)
+- [Golang](go/README.md)
+- [Lua](lua/README.md)
+- [JavaScript](js/README.md)
 
 ## Upstream API
 
